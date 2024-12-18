@@ -4,12 +4,17 @@ import (
 	"context"
 	"fmt"
 	"geofence-demo/internal/geofence"
+	"geofence-demo/internal/metrics"
+	"geofence-demo/internal/utils"
+
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Handler struct {
 	geoService *geofence.Service
 	logger     *zap.Logger
+	metrics    *metrics.Metrics
 }
 
 type Request struct {
@@ -25,11 +30,26 @@ type Response struct {
 	Message    string `json:"message"`
 }
 
-func New() *Handler {
-	logger, _ := zap.NewProduction()
+func New(metrics *metrics.Metrics) *Handler {
+	// CloudWatch optimized config
+	config := zap.NewProductionConfig()
+	config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	config.EncoderConfig.MessageKey = "message"
+	config.EncoderConfig.LevelKey = "level"
+	config.EncoderConfig.CallerKey = "caller"
+	config.DisableStacktrace = false
+	config.Sampling = nil // Disable sampling in Lambda
+
+	logger, _ := config.Build()
+	
 	return &Handler{
 		geoService: geofence.New(),
-		logger:     logger,
+		logger:     logger.With(
+			zap.String("service", "geofence"),
+			zap.String("version", "1.0.0"),
+		),
+		metrics:    metrics,
 	}
 }
 
@@ -55,6 +75,7 @@ func (h *Handler) Handle(ctx context.Context, req Request) (resp Response, err e
 // Move existing handler logic to new method
 func (h *Handler) handleRequest(ctx context.Context, req Request) (Response, error) {
 	h.logger.Info("processing request",
+		zap.String("request_id", utils.GetRequestID(ctx)),
 		zap.String("device_id", req.DeviceID),
 		zap.Float64("latitude", req.Lat),
 		zap.Float64("longitude", req.Lng),
@@ -76,7 +97,7 @@ func (h *Handler) handleRequest(ctx context.Context, req Request) (Response, err
 
 	// Check timestamp
 	if req.Timestamp == "" {
-		return Response{}, fmt.Errorf("processing failed: %w", 
+		return Response{}, fmt.Errorf("processing failed: %w",
 			&geofence.ValidationError{
 				Field: "timestamp",
 				Value: req.Timestamp,
