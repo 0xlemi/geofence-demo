@@ -1,0 +1,40 @@
+{
+  "ValidEvent": {
+    "version": "2.0",
+    "routeKey": "POST /location",
+    "body": {
+      "device_id": "dev1",
+      "latitude": 20.6597,
+      "longitude": -103.3496,
+      "timestamp": "2024-03-26T12:00:00Z"
+    },
+    "requestContext": {
+      "http": {
+        "method": "POST",
+        "path": "/location"
+      }
+    }
+  },
+  "InvalidJSON": {
+    "version": "2.0",
+    "routeKey": "POST /location",
+    "body": "{malformed json}",
+    "requestContext": {
+      "http": {
+        "method": "POST",
+        "path": "/location"
+      }
+    }
+  },
+  "EmptyBody": {
+    "version": "2.0",
+    "routeKey": "POST /location",
+    "body": {},
+    "requestContext": {
+      "http": {
+        "method": "POST",
+        "path": "/location"
+      }
+    }
+  }
+} 

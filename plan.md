@@ -73,9 +73,18 @@
 
 ### Test Data Generator (15 mins total)
 
-- [ ] Create test points generator (5 mins)
-- [ ] Add sample payloads (5 mins)
-- [ ] Create test events (5 mins)
+- [✓] Create test points generator (5 mins)
+   - Tool to generate valid test coordinates
+   - Points inside/outside fences
+   - Realistic data patterns
+- [✓] Add sample payloads (5 mins)
+   - Error cases
+   - Invalid data
+   - Missing fields
+- [✓] Create test events (5 mins)
+   - Lambda event format
+   - API Gateway wrappers
+   - Different scenarios
 
 ### AWS Service Integration (15 mins total)
 

@@ -1,0 +1,36 @@
+[
+  {
+    "comment": "Missing device_id",
+    "payload": {
+      "latitude": 20.6597,
+      "longitude": -103.3496,
+      "timestamp": "2024-03-26T12:00:00Z"
+    }
+  },
+  {
+    "comment": "Invalid latitude",
+    "payload": {
+      "device_id": "dev1",
+      "latitude": 200.0,
+      "longitude": -103.3496,
+      "timestamp": "2024-03-26T12:00:00Z"
+    }
+  },
+  {
+    "comment": "Invalid longitude",
+    "payload": {
+      "device_id": "dev1",
+      "latitude": 20.6597,
+      "longitude": -200.0,
+      "timestamp": "2024-03-26T12:00:00Z"
+    }
+  },
+  {
+    "comment": "Missing timestamp",
+    "payload": {
+      "device_id": "dev1",
+      "latitude": 20.6597,
+      "longitude": -103.3496
+    }
+  }
+] 
