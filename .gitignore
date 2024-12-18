@@ -1,2 +1,2 @@
-# Ignore specific file
-/plan.md              # Only in root directory
+/plan.md             
+/stepslog.md

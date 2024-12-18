@@ -4,9 +4,9 @@
 
 ### Initialize Go Project (20 mins total)
 
-- [ ] Create project directory (3 mins)
-- [ ] Run `go mod init geofence-demo` (2 mins)
-- [ ] Create basic directory structure (15 mins):
+- [✓] Create project directory (3 mins)
+- [✓] Run `go mod init geofence-demo` (2 mins)
+- [✓] Create basic directory structure (15 mins):
   ```
   /geofence-demo
     /cmd
@@ -23,15 +23,15 @@
 
 ### AWS Setup (40 mins total)
 
-- [ ] Install AWS CLI if not present (5 mins)
-- [ ] Configure AWS credentials (10 mins)
+- [✓] Install AWS CLI if not present (5 mins)
+- [✓] Configure AWS credentials (10 mins)
   ```bash
   aws configure
   ```
-- [ ] Create IAM role with policies (15 mins):
+- [✓] Create IAM role with policies (15 mins):
   - AWSLambdaBasicExecutionRole
   - CloudWatchLogsFullAccess
-- [ ] Test AWS CLI connection and troubleshoot if needed (10 mins)
+- [✓] Test AWS CLI connection and troubleshoot if needed (10 mins)
 
 ## Core Development (2.5 hours)
 
