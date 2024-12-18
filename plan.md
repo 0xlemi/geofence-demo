@@ -38,6 +38,7 @@
 ### Lambda Handler Structure (45 mins total)
 
 - [✓] Create basic types (15 mins):
+
   ```go
   type Request struct {
     DeviceID string  `json:"device_id"`
@@ -52,23 +53,16 @@
     Message    string `json:"message"`
   }
   ```
+
 - [✓] Set up Lambda handler function (15 mins)
 - [✓] Add basic request validation (15 mins)
 
 ### Geofence Logic (45 mins total)
 
-- [ ] Create geofence structure (10 mins):
-  ```go
-  type Geofence struct {
-    ID          string
-    CenterLat   float64
-    CenterLng   float64
-    RadiusMeters float64
-  }
-  ```
-- [ ] Implement distance calculation (15 mins)
-- [ ] Add point-in-circle check (10 mins)
-- [ ] Create and test mock fence data (10 mins)
+- [✓] Create geofence structure (10 mins)
+- [✓] Implement distance calculation (15 mins)
+- [✓] Add point-in-circle check (10 mins)
+- [✓] Create and test mock fence data (10 mins)
 
 ### Logging & Error Handling (30 mins total)
 
