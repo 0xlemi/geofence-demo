@@ -37,8 +37,7 @@
 
 ### Lambda Handler Structure (45 mins total)
 
-- [ ] Create basic types (15 mins):
-
+- [✓] Create basic types (15 mins):
   ```go
   type Request struct {
     DeviceID string  `json:"device_id"`
@@ -53,9 +52,8 @@
     Message    string `json:"message"`
   }
   ```
-
-- [ ] Set up Lambda handler function (15 mins)
-- [ ] Add basic request validation (15 mins)
+- [✓] Set up Lambda handler function (15 mins)
+- [✓] Add basic request validation (15 mins)
 
 ### Geofence Logic (45 mins total)
 
