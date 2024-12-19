@@ -91,6 +91,8 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
   - GeofenceHit
   - GeofenceMiss
 
+![Dashboard de CloudWatch](assets/cloudwatch-dashboard.png)
+
 ## Arquitectura
 
 ```mermaid
@@ -112,13 +114,13 @@ graph TD
         J --> M[GeofenceMiss]
     end
 
-style A fill:#f0f0f0,stroke:#9370db,stroke-width:2px
-style B fill:#f0f0f0,stroke:#9370db,stroke-width:2px
-style E fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
-style F fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
-style K fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
-style L fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
-style M fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
+style A fill:#f0f0f0,stroke:#9370db,stroke-width:2px,color:#333
+style B fill:#f0f0f0,stroke:#9370db,stroke-width:2px,color:#333
+style E fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px,color:#333
+style F fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px,color:#333
+style K fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px,color:#333
+style L fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px,color:#333
+style M fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px,color:#333
 ```
 
 ## Flujo de Datos
