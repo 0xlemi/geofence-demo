@@ -1,9 +1,11 @@
 # Servicio de Geovallas con AWS Lambda
 
 ## Descripción General
+
 Este proyecto implementa un servicio de geovallas (geofencing) serverless utilizando AWS Lambda y Go. Permite verificar si una ubicación geográfica se encuentra dentro de zonas predefinidas en ciudades mexicanas.
 
 ## Características
+
 - Servicio serverless usando AWS Lambda
 - Desarrollado en Go 1.x
 - Verificación de ubicación en tiempo real
@@ -12,12 +14,15 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
 - Manejo robusto de errores
 
 ## Configuración
+
 1. Requisitos previos:
+
    - Go 1.x
    - AWS CLI configurado
    - Cuenta AWS con permisos necesarios
 
 2. Instalación:
+
    ```bash
    git clone <repositorio>
    cd geofence-demo
@@ -31,10 +36,13 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
    ```
 
 ## API
+
 ### Endpoint
+
 `POST /location`
 
 ### Payload
+
 ```json
 {
   "device_id": "string",
@@ -45,6 +53,7 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
 ```
 
 ### Respuesta
+
 ```json
 {
   "in_geofence": boolean,
@@ -54,7 +63,9 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
 ```
 
 ### Ejemplos
+
 #### Dentro de Guadalajara
+
 ```json
 // Request
 {
@@ -73,6 +84,7 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
 ```
 
 ## Monitoreo
+
 - Logs disponibles en CloudWatch
 - Métricas:
   - RequestCount
@@ -80,23 +92,61 @@ Este proyecto implementa un servicio de geovallas (geofencing) serverless utiliz
   - GeofenceMiss
 
 ## Arquitectura
-```
-Lambda Function
-    ↓
-API Gateway
-    ↓
-Handler (Go)
-    ↓
-Geofence Service
-    ↓
-CloudWatch (Logs/Metrics)
+
+```mermaid
+graph TD
+    A[API Gateway] --> B[Lambda Function]
+    B --> C[Handler]
+    C -->|Validate| D[Request Validation]
+    C -->|Log| E[CloudWatch Logs]
+    C -->|Monitor| F[CloudWatch Metrics]
+    subgraph Manejador Lambda
+        D --> G[Geofence Service]
+        G -->|Check| H{Inside Fence?}
+        H -->|Yes| I[GeofenceHit]
+        H -->|No| J[GeofenceMiss]
+    end
+    subgraph Métricas
+        F --> K[RequestCount]
+        I --> L[GeofenceHit]
+        J --> M[GeofenceMiss]
+    end
+
+style A fill:#f0f0f0,stroke:#9370db,stroke-width:2px
+style B fill:#f0f0f0,stroke:#9370db,stroke-width:2px
+style E fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
+style F fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
+style K fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
+style L fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
+style M fill:#f0f0f0,stroke:#6b8e23,stroke-width:2px
 ```
 
-## Desarrollo
-- Estructura de código modular
-- Pruebas unitarias incluidas
-- Validación de entrada robusta
-- Manejo de errores completo
+## Flujo de Datos
 
-## Licencia
-MIT
+1. La solicitud llega a través de API Gateway
+2. La función Lambda procesa la solicitud
+3. El manejador valida y limpia los datos de entrada
+4. El servicio de geovallas verifica la ubicación
+5. Las métricas se registran en CloudWatch
+6. Se devuelve la respuesta con el estado de la geovalla
+
+## Simulador de Pruebas
+
+El proyecto incluye un simulador para pruebas de carga que:
+
+- Simula 10 dispositivos enviando ubicaciones cada 500ms
+- Genera movimiento aleatorio alrededor de las geovallas
+- Muestra estadísticas en tiempo real:
+  - Total de solicitudes
+  - Solicitudes por segundo
+  - Estado de cada dispositivo
+
+### Uso del Simulador
+
+```bash
+# Ejecutar el simulador
+./scripts/simulate.sh
+
+# Detener el simulador
+Ctrl+C
+```
