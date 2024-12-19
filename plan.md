@@ -98,9 +98,9 @@
   - Example requests/responses (5 mins)
   - Architecture overview (5 mins)
 
-### Testing (20 mins total)
+### Testing (20 mins total) ✓
 
-- [ ] Create test cases:
+- [✓] Create test cases:
   - Point inside fence (5 mins)
   - Point outside fence (5 mins)
   - Invalid coordinates (5 mins)
@@ -108,11 +108,11 @@
 
 ## Buffer Activities (45 mins)
 
-- [ ] Add input sanitization (10 mins)
-- [ ] Improve error messages (10 mins)
-- [ ] Add request ID tracking (5 mins)
-- [ ] Clean up logging format (5 mins)
-- [ ] Add basic metrics dashboard (10 mins)
+- [✓] Add input sanitization (10 mins)
+- [✓] Improve error messages (10 mins)
+- [✓] Add request ID tracking (5 mins)
+- [✓] Clean up logging format (5 mins)
+- [✓] Add basic metrics dashboard (10 mins)
 - [ ] Create sample test script (5 mins)
 
 These timings are more realistic and include:

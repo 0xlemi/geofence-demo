@@ -11,8 +11,10 @@ import (
 )
 
 func main() {
-	// Configure AWS
-	cfg, err := config.LoadDefaultConfig(context.Background())
+	// Configure AWS with specific region
+	cfg, err := config.LoadDefaultConfig(context.Background(),
+		config.WithRegion("us-east-2"),
+	)
 	if err != nil {
 		panic(err)
 	}

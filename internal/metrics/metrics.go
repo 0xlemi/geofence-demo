@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"time"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
+	"fmt"
 )
 
 type Metrics struct {
@@ -29,6 +30,12 @@ func (m *Metrics) IncrementRequests(ctx context.Context) error {
 				Value:     aws.Float64(1.0),
 				Unit:      types.StandardUnitCount,
 				Timestamp: aws.Time(time.Now()),
+				Dimensions: []types.Dimension{
+					{
+						Name:  aws.String("Service"),
+						Value: aws.String("geofence"),
+					},
+				},
 			},
 		},
 	})
@@ -41,7 +48,7 @@ func (m *Metrics) TrackGeofenceHit(ctx context.Context, fenceID string, isInside
 		metricName = "GeofenceMiss"
 	}
 	
-	_, err := m.client.PutMetricData(ctx, &cloudwatch.PutMetricDataInput{
+	input := &cloudwatch.PutMetricDataInput{
 		Namespace: aws.String(m.namespace),
 		MetricData: []types.MetricDatum{
 			{
@@ -51,12 +58,17 @@ func (m *Metrics) TrackGeofenceHit(ctx context.Context, fenceID string, isInside
 				Timestamp: aws.Time(time.Now()),
 				Dimensions: []types.Dimension{
 					{
-						Name:  aws.String("FenceID"),
-						Value: aws.String(fenceID),
+						Name:  aws.String("Service"),
+						Value: aws.String("geofence"),
 					},
 				},
 			},
 		},
-	})
+	}
+	
+	_, err := m.client.PutMetricData(ctx, input)
+	if err != nil {
+		fmt.Printf("Error publishing metric %s: %v\n", metricName, err)
+	}
 	return err
 } 

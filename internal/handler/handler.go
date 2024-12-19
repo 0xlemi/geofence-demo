@@ -6,6 +6,8 @@ import (
 	"geofence-demo/internal/geofence"
 	"geofence-demo/internal/metrics"
 	"geofence-demo/internal/utils"
+	"math"
+	"strings"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -42,14 +44,14 @@ func New(metrics *metrics.Metrics) *Handler {
 	config.Sampling = nil // Disable sampling in Lambda
 
 	logger, _ := config.Build()
-	
+
 	return &Handler{
 		geoService: geofence.New(),
-		logger:     logger.With(
+		logger: logger.With(
 			zap.String("service", "geofence"),
 			zap.String("version", "1.0.0"),
 		),
-		metrics:    metrics,
+		metrics: metrics,
 	}
 }
 
@@ -74,6 +76,16 @@ func (h *Handler) Handle(ctx context.Context, req Request) (resp Response, err e
 
 // Move existing handler logic to new method
 func (h *Handler) handleRequest(ctx context.Context, req Request) (Response, error) {
+	// Add this at the start of the function
+	if err := h.metrics.IncrementRequests(ctx); err != nil {
+		h.logger.Error("failed to increment request count", zap.Error(err))
+	}
+
+	// Sanitize inputs
+	req.DeviceID = strings.TrimSpace(req.DeviceID)
+	req.Lat = math.Round(req.Lat*1000000) / 1000000 // Round to 6 decimal places
+	req.Lng = math.Round(req.Lng*1000000) / 1000000
+
 	h.logger.Info("processing request",
 		zap.String("request_id", utils.GetRequestID(ctx)),
 		zap.String("device_id", req.DeviceID),
