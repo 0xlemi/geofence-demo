@@ -105,8 +105,15 @@ func (h *Handler) handleRequest(ctx context.Context, req Request) (Response, err
 			})
 	}
 
-	// TODO: Add geofence check logic
-	return Response{}, nil
+	// Add geofence check logic
+	isInside, fenceID := h.geoService.IsPointInFence(req.Lat, req.Lng)
+	h.metrics.TrackGeofenceHit(ctx, fenceID, isInside)
+
+	return Response{
+		InGeofence: isInside,
+		FenceID:    fenceID,
+		Message:    fmt.Sprintf("Location check completed for device %s", req.DeviceID),
+	}, nil
 }
 
 func (h *Handler) validateCoordinates(lat, lng float64) error {

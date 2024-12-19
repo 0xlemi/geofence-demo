@@ -62,3 +62,13 @@ func (s *Service) calculateDistance(lat1, lng1, lat2, lng2 float64) float64 {
 func toRadians(degrees float64) float64 {
 	return degrees * math.Pi / 180
 }
+
+func (s *Service) IsPointInFence(lat, lng float64) (bool, string) {
+	for _, fence := range s.fences {
+		dist := s.calculateDistance(lat, lng, fence.CenterLat, fence.CenterLng)
+		if dist <= fence.RadiusMeters {
+			return true, fence.ID
+		}
+	}
+	return false, ""
+}

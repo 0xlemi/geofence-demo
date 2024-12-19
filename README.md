@@ -1,35 +1,102 @@
-# Geofencing Lambda Demo / Demo de Lambda para Geovallas
+# Servicio de Geovallas con AWS Lambda
 
-## English
+## Descripción General
+Este proyecto implementa un servicio de geovallas (geofencing) serverless utilizando AWS Lambda y Go. Permite verificar si una ubicación geográfica se encuentra dentro de zonas predefinidas en ciudades mexicanas.
 
-This project is a technical assessment for Numaris as part of their interview process. It implements a serverless geofencing solution using AWS Lambda and Go.
+## Características
+- Servicio serverless usando AWS Lambda
+- Desarrollado en Go 1.x
+- Verificación de ubicación en tiempo real
+- Registro estructurado con CloudWatch
+- Métricas de monitoreo integradas
+- Manejo robusto de errores
 
-### Project Overview
-- Serverless geofencing service using AWS Lambda
-- Written in Go
-- Handles real-time location-based checks
-- Includes comprehensive logging and error handling
-- Built with scalability in mind
+## Configuración
+1. Requisitos previos:
+   - Go 1.x
+   - AWS CLI configurado
+   - Cuenta AWS con permisos necesarios
 
-### Setup Instructions
-1. Clone this repository
-2. Configure AWS credentials
-3. Run `go mod init geofence-demo`
-4. Build and deploy using provided scripts
+2. Instalación:
+   ```bash
+   git clone <repositorio>
+   cd geofence-demo
+   go mod download
+   ```
 
-## Español
+3. Compilación:
+   ```bash
+   GOOS=linux GOARCH=amd64 go build -o bootstrap cmd/lambda/main.go
+   zip function.zip bootstrap
+   ```
 
-Este proyecto es una prueba técnica para Numaris como parte de su proceso de entrevista. Implementa una solución de geovallas (geofencing) sin servidor utilizando AWS Lambda y Go.
+## API
+### Endpoint
+`POST /location`
 
-### Descripción General
-- Servicio de geovallas sin servidor usando AWS Lambda
-- Desarrollado en Go
-- Maneja verificaciones de ubicación en tiempo real
-- Incluye registro y manejo de errores completo
-- Diseñado pensando en la escalabilidad
+### Payload
+```json
+{
+  "device_id": "string",
+  "latitude": float64,
+  "longitude": float64,
+  "timestamp": "string (ISO8601)"
+}
+```
 
-### Instrucciones de Configuración
-1. Clonar este repositorio
-2. Configurar credenciales de AWS
-3. Ejecutar `go mod init geofence-demo`
-4. Compilar y desplegar usando los scripts proporcionados 
+### Respuesta
+```json
+{
+  "in_geofence": boolean,
+  "fence_id": "string",
+  "message": "string"
+}
+```
+
+### Ejemplos
+#### Dentro de Guadalajara
+```json
+// Request
+{
+  "device_id": "dev1",
+  "latitude": 20.6597,
+  "longitude": -103.3496,
+  "timestamp": "2024-03-26T12:00:00Z"
+}
+
+// Response
+{
+  "in_geofence": true,
+  "fence_id": "fence-1",
+  "message": "Location check completed for device dev1"
+}
+```
+
+## Monitoreo
+- Logs disponibles en CloudWatch
+- Métricas:
+  - RequestCount
+  - GeofenceHit
+  - GeofenceMiss
+
+## Arquitectura
+```
+Lambda Function
+    ↓
+API Gateway
+    ↓
+Handler (Go)
+    ↓
+Geofence Service
+    ↓
+CloudWatch (Logs/Metrics)
+```
+
+## Desarrollo
+- Estructura de código modular
+- Pruebas unitarias incluidas
+- Validación de entrada robusta
+- Manejo de errores completo
+
+## Licencia
+MIT
